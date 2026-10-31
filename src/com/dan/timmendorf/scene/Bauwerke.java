@@ -18,7 +18,8 @@ import java.util.function.DoubleBinaryOperator;
  * OpenStreetMap ({@code daten/bauwerke/bauwerke.tsv}, Schritt {@code bauwerke} der Aufbereitung) mit Deck, Pfählen,
  * Geländer und Laternen; die Maritim Seebrücke mit ihrer Schleife, die Seeschlösschenbrücke mit dem Teehaus Wolkenlos,
  * die Seebrücke Niendorf (fehlt in OSM, nach dem Luftbild), die Türme der DLRG, die Laternen der Promenade, die Kutter im
- * Niendorfer Hafen, der Alte Leuchtturm Travemünde und die Strandkörbe. Alles als {@link Baunetz} für {@code bauten.vert/frag};
+ * Niendorfer Hafen, der Alte Leuchtturm Travemünde und die Plätze der Strandkörbe. Alles als {@link Baunetz} für {@code bauten.vert/frag};
+ * die Körbe selbst zeichnet seit Phase 20 {@code com.dan.beachchair} ({@link #korb()});
  * die Häuser aus LOD2 an denselben Stellen (Wolkenlos, Alter Leuchtturm, Hütten der DLRG) nimmt {@link #ersetzt} heraus.
  * <p>
  * Maße [G nach den Fotos Seebruecke1–4, Wolkenlos1–2, Strandkorb1–2, Hafen1–2 und dem DOP20 2025]: Deck 2,6 m NHN (wie
@@ -505,24 +506,35 @@ public final class Bauwerke {
     }
 
     /**
-     * Die Körbe als Netz: Unterteil aus Korbgeflecht, Seitenwangen, Rückwand, Haube aus Segeltuch mit Streifen (Farbe nach
-     * Kennzahl, meist blau-weiß); 50 Dreiecke je Korb.
+     * Seit Phase 20: der Korb selbst aus {@code com.dan.beachchair} (Ostseekorb nach dem Foto Strandkorb.jpg: weißes
+     * Geflecht, Holz in Honig, Haube rund, Streifen meist blau-weiß), statt der Kästen aus Phase 9. Die Qualität setzt der
+     * Renderer.
      */
-    public static Baunetz koerbeNetz(List<Korb> ks) {
-        Baunetz n = new Baunetz();
-        for (Korb k : ks) {
-            int korb = Baunetz.merkmal(Baunetz.KORB, false, k.kennzahl(), k.y()), tuch = Baunetz.merkmal(Baunetz.SEGEL, false, k.kennzahl(), k.y());
-            double a = Math.toRadians(k.richtung()), fx = Math.sin(a), fz = -Math.cos(a), rx = -fz, rz = fx, x = k.x(), z = k.z(), y = k.y();
-            // seit Phase 10 vorn offen: Sitz 0,42 m hoch, Seitenwangen und Rückwand bis unter die Haube (wer drin sitzt, ist zu sehen)
-            n.quader(x - fx * 0.1, y, z - fz * 0.1, 1.25, 0.65, KORB_SITZ, k.richtung(), korb);
-            n.quader(x - fx * 0.36, y + KORB_SITZ, z - fz * 0.36, 1.25, 0.14, 1.32 - KORB_SITZ, k.richtung(), korb);
-            for (int sd = -1; sd <= 1; sd += 2) n.quader(x + rx * sd * 0.57, y, z + rz * sd * 0.57, 0.11, 0.85, 1.32, k.richtung(), korb);
-            n.quader(x - fx * 0.05, y + 1.32, z - fz * 0.05, 1.29, 0.95, 0.24, k.richtung(), tuch);
-        }
-        return n;
+    public static com.dan.beachchair.BeachChair korb() { return com.dan.beachchair.BeachChair.timmendorf(); }
+
+    /** Die Körbe für {@code com.dan.beachchair}: Ort, Blick und Kennzahl wie {@link #koerbe}, Farbe aus der Palette des Korbs. */
+    public static List<com.dan.beachchair.BeachChair.Chair> stuehle(List<Korb> ks, com.dan.beachchair.BeachChair korb) {
+        List<com.dan.beachchair.BeachChair.Chair> l = new ArrayList<>(ks.size());
+        for (Korb k : ks) l.add(korb.chair(k.x(), k.y(), k.z(), k.richtung(), k.kennzahl() * 7919L + Math.round(k.x() * 13 + k.z() * 7)));
+        return l;
     }
 
-    /** Höhe des Sitzes im Strandkorb (m). */
+    /**
+     * Seit Phase 20: Anteil offener Körbe zur Stunde [G]: die Vermieter schließen ab 9 Uhr auf und ab 18 Uhr zu, nachts
+     * ist alles verschlossen; bei Regen bleibt die Hälfte zu, ab Bft 7 fast alle. Körbe mit Gästen sind immer offen.
+     */
+    public static double offen(double h, boolean regen, double wind) {
+        double t = h < 8.5 || h > 20.5 ? 0 : h < 10 ? (h - 8.5) / 1.5 : h > 18 ? (20.5 - h) / 2.5 : 1;
+        double k = 0.9 * t;
+        if (regen) k *= 0.5;
+        if (wind > 13.9) k *= 0.15;
+        return k;
+    }
+
+    /** Wie bequem es sich die Gäste machen (Lehne hinten, Fußstützen heraus): am Nachmittag am meisten [G]. */
+    public static double bequem(double h) { return Math.max(0, Math.min(1, 0.3 + 0.6 * Math.exp(-Math.pow((h - 15) / 3, 2)))); }
+
+    /** Höhe des Sitzes im Strandkorb (m), wie {@code BeachChair.seatHeight}. */
     public static final double KORB_SITZ = 0.42;
 
     /** Ob die Körbe zur Jahreszeit stehen: von Mitte April bis Ende September. */

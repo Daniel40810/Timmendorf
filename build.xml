@@ -163,16 +163,18 @@
          Ort, 25.7.2026 19:30 MESZ, Stufe Mittel, Full HD, volles HUD mit den Zeiten jedes Durchgangs). Auf der Radeon
          laufen lassen; die Zeiten stehen auch in der Ausgabe. -Dansicht=Name wählt eine der neun Ansichten (etwa
          -Dansicht=Seebruecke), -Dbild=… einen anderen Dateinamen. -->
-    <target name="tempo" depends="jar" description="docs/status/Status_Phase&lt;N&gt;.png nach dem Stand (Grundansicht, volles HUD; mit -Dansicht=… je Ansicht).">
+    <target name="tempo" depends="jar" description="docs/status/Status_Phase&lt;N&gt;.png nach dem Stand (Grundansicht, volles HUD; mit -Dansicht=… je Ansicht, seit Phase 20 -Dsandsturm=an).">
         <property name="platform.java" value="java"/>
         <property name="ansicht" value=""/>
         <property name="bild" value="auto"/>
+        <property name="sandsturm" value="aus"/>
         <java classname="com.dan.timmendorf.tools.Tempo" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
             <jvmarg value="-Dstdout.encoding=UTF-8"/>
             <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
             <jvmarg value="-Xmx6g"/>
             <jvmarg value="-Dhud=voll"/>
             <jvmarg value="-Dansicht=${ansicht}"/>
+            <jvmarg value="-Dsandsturm=${sandsturm}"/>
             <arg line="120 1920 1080 ${bild} MITTEL 19.5 2026-07-25"/>
             <classpath><pathelement path="${run.classpath}"/></classpath>
         </java>

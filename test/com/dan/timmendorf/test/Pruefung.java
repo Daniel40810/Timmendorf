@@ -202,6 +202,7 @@ public final class Pruefung {
         w.setTerrain(tb);
         boote(w, tb);
         bauwerke(w, tb);
+        strand(w, tb);
         menschen(tb);
         abend(tb);
         wetter(tb);
@@ -527,6 +528,83 @@ public final class Pruefung {
                 com.dan.timmendorf.gl.Renderer.KLIFF_ZELLE, com.dan.timmendorf.gl.Renderer.KLIFF_N, 6, 40);
         check(!t.measured() || (m.wallShare > 0.0005 && m.wallShare < 0.1), f("Brodtener Ufer (cliff): Wand %.2f %%, Geröll %.2f %% der Karte (%.0f × %.0f m)", m.wallShare * 100, m.talusShare * 100,
                 com.dan.timmendorf.gl.Renderer.KLIFF_ZELLE * com.dan.timmendorf.gl.Renderer.KLIFF_N, com.dan.timmendorf.gl.Renderer.KLIFF_ZELLE * com.dan.timmendorf.gl.Renderer.KLIFF_N));
+    }
+
+    /**
+     * Seit Phase 20: die Strandkörbe aus com.dan.beachchair (nach dem Foto Strandkorb.jpg) und der Flugsand am Strand wie in
+     * Sylt (com.dan.dune mit dem Wind aus com.dan.wind).
+     */
+    static void strand(Wiring w, Terrain t) {
+        teil("Strandkörbe und Flugsand (Phase 20): beachchair, dune, wind");
+        com.dan.beachchair.BeachChair korb = com.dan.timmendorf.scene.Bauwerke.korb();
+        System.out.println("    " + korb.describe());
+        check(korb.type == com.dan.beachchair.BeachChair.Type.OSTSEE && Math.abs(korb.seatHeight - com.dan.timmendorf.scene.Bauwerke.KORB_SITZ) < 1e-9,
+                f("Ostseekorb, Sitz %.2f m wie die Badegäste ihn nehmen", korb.seatHeight));
+        java.util.List<com.dan.timmendorf.scene.Bauwerke.Korb> ks = w.koerbe;
+        if (ks.isEmpty()) {   // auf der Bühne ohne Strand: eine Reihe zur Probe
+            ks = new java.util.ArrayList<>();
+            for (int i = 0; i < 40; i++) ks.add(new com.dan.timmendorf.scene.Bauwerke.Korb(i * 3.2, 1.5, 100, 45, i));
+        }
+        java.util.List<com.dan.beachchair.BeachChair.Chair> st = com.dan.timmendorf.scene.Bauwerke.stuehle(ks, korb);
+        boolean gleich = st.size() == ks.size();
+        for (int i = 0; i < st.size() && gleich; i++) gleich = st.get(i).x == ks.get(i).x() && st.get(i).headingDeg == ks.get(i).richtung();
+        check(gleich, f("%,d Körbe an den Plätzen aus Phase 9, Blick zur See", st.size()));
+        double[] anteil = new double[3];
+        double[] std = {12, 23, 12};
+        java.util.BitSet bes = new java.util.BitSet();
+        for (int i = 0; i < st.size(); i += 5) bes.set(i);
+        for (int k = 0; k < 3; k++) {
+            double offen = com.dan.timmendorf.scene.Bauwerke.offen(std[k], k == 2, 5);
+            int n = 0, gastZu = 0;
+            for (int i = 0; i < st.size(); i++) {
+                com.dan.beachchair.BeachChair.Chair c = st.get(i);
+                boolean gast = k == 0 && bes.get(i);
+                korb.pose(c, gast ? 1 : offen, com.dan.timmendorf.scene.Bauwerke.bequem(std[k]));
+                if (!c.closed) n++;
+                if (gast && c.closed) gastZu++;
+            }
+            anteil[k] = n / (double) Math.max(1, st.size());
+            if (k == 0) check(gastZu == 0, "Körbe mit Gästen sind offen");
+        }
+        check(anteil[0] > 0.8 && anteil[1] == 0 && anteil[2] < anteil[0] * 0.75,
+                f("offen: mittags %.0f %%, nachts %.0f %%, mittags im Regen %.0f %%", anteil[0] * 100, anteil[1] * 100, anteil[2] * 100));
+        double[] h = korb.mesh(com.dan.beachchair.BeachChair.Lod.NEAR).bounds();
+        check(Math.abs(h[4] - korb.height) < 0.01, f("Korb %.2f m hoch, nah %d, fern %d Dreiecke", h[4], korb.mesh(com.dan.beachchair.BeachChair.Lod.NEAR).triangles(),
+                korb.mesh(com.dan.beachchair.BeachChair.Lod.FAR).triangles()));
+
+        // Flugsand: auf trockenem Strand bei Sturm auflandig, nass nach Regen nicht, bei Schnee nicht
+        double[] pk = null;
+        for (com.dan.timmendorf.scene.Bauwerke.Korb k : w.koerbe) {
+            double a = Math.toRadians(k.richtung()), x = k.x() + Math.sin(a) * 4, z = k.z() - Math.cos(a) * 4;
+            if (t.artAt(x, z) == Terrain.STRAND && t.height(x, z) > 1.2) { pk = new double[]{x, t.height(x, z) + 1.6, z, k.richtung()}; break; }
+        }
+        if (pk == null) { System.out.println("    (kein trockener Strand im Gelände: Flugsand nur mit daten/gelaende geprüft)"); return; }
+        com.dan.timmendorf.scene.Sand sand = new com.dan.timmendorf.scene.Sand(t::height, t::artAt, () -> 0.0);
+        sand.dune.quality = com.dan.dune.Dune.Quality.MEDIUM;
+        sand.koerner().budget = sand.dune.grainBudget();
+        long t0 = System.nanoTime();
+        sand.bereit(pk, 22, pk[3], 2);
+        double ms = (System.nanoTime() - t0) / 1e6;
+        double q = sand.flussBei(pk[0], pk[2]);
+        System.out.println("    " + sand.zeile(pk[0], pk[2]));
+        check(q > 1e-4 && sand.koerner().count > 100, f("Bft 9 auflandig auf trockenem Strand: %.0f g/(m·s), %d Körner (Wind und Feld %.1f s)", q * 1000, sand.koerner().count, ms / 1000));
+        sand.regen = 0.06;
+        sand.baueFeld(pk[0], pk[2]);
+        double qn = sand.flussBei(pk[0], pk[2]);
+        sand.regen = 0;
+        sand.schnee = 0.05;
+        sand.baueFeld(pk[0], pk[2]);
+        double qs = sand.flussBei(pk[0], pk[2]);
+        check(qn == 0 && qs == 0, f("nach Regen %.0f, bei Schnee %.0f g/(m·s)", qn * 1000, qs * 1000));
+        sand.schnee = 0;
+        sand.baueFeld(pk[0], pk[2]);
+        double qw = 0;
+        com.dan.dune.FluxField ff = sand.feld();
+        for (int i = -40; i <= 40; i += 2) {
+            double a = Math.toRadians(pk[3]), x = pk[0] + Math.sin(a) * i, z = pk[2] - Math.cos(a) * i;
+            if (t.height(x, z) < 0.05) qw = Math.max(qw, Math.max(0, ff.fluxAt(x, z)));
+        }
+        check(qw == 0, "unter dem Pegel fliegt nichts");
     }
 
     /** Seit Phase 10a: Menschen und Verkehr zu verschiedenen Zeiten (eigene Uhr, eigene Verdrahtung). */

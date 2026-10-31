@@ -2,11 +2,11 @@
 
 ![Das Feuerwerk über der Lübecker Bucht, 1. August, 22:45](docs/bilder/feuerwerk.jpg)
 
-Die Lübecker Bucht als 3D-Echtzeitszene, von Haffkrug und Scharbeutz über Timmendorfer Strand und Niendorf bis Travemünde. Zu sehen sind der Strand mit 8 400 Strandkörben, die Maritim Seebrücke mit ihrer Schleife, das Teehaus Wolkenlos, der Niendorfer Hafen, das Brodtener Steilufer und Travemünde mit der Passat. Auf dem Wasser fahren Optimisten, eine Regatta mit 20 J/70, Yachten, Kats, Kiter und die Fähren aus Skandinavien. An der Promenade gehen Menschen spazieren, auf den Straßen fahren Autos und Busse. Am Abend des 1. August steigt das große Feuerwerk.
+Die Lübecker Bucht als 3D-Echtzeitszene, von Haffkrug und Scharbeutz über Timmendorfer Strand und Niendorf bis Travemünde. Zu sehen sind der Strand mit 8 400 Strandkörben (nach dem Foto `Strandkorb.jpg`, mit Flugsand wie in Sylt), die Maritim Seebrücke mit ihrer Schleife, das Teehaus Wolkenlos, der Niendorfer Hafen, das Brodtener Steilufer und Travemünde mit der Passat. Auf dem Wasser fahren Optimisten, eine Regatta mit 20 J/70, Yachten, Kats, Kiter und die Fähren aus Skandinavien. An der Promenade gehen Menschen spazieren, auf den Straßen fahren Autos und Busse. Am Abend des 1. August steigt das große Feuerwerk.
 
 Die Szene läuft mit eigenem Wetter (elf Lagen), dem Jahr mit Schnee und Eis, der Sturmflut vom Oktober 2023 und Klang, der ganz ohne Aufnahmen erzeugt wird. Fünf Regiebücher führen durch die Bucht, auf Wunsch im Kino. Gelände, Häuser, Bewuchs und Wege stammen aus den amtlichen Geodaten Schleswig-Holsteins und aus OpenStreetMap. Gespeichert wird in Oracle Spatial.
 
-Java 21, OpenGL 4.3 (JOGL), Swing im F-Stil. Fortsetzung von Sylt („Projekt der Brandung“). Die Bausteine liegen als Packages in `lib/Renderer.jar`, sechs davon sind für Timmendorf entstanden.
+Java 21, OpenGL 4.3 (JOGL), Swing im F-Stil. Fortsetzung von Sylt („Projekt der Brandung“). Die Bausteine liegen als Packages in `lib/Renderer.jar`, sieben davon sind für Timmendorf entstanden.
 
 **Vorschau:** [docs/bilder/vorschau.mp4](docs/bilder/vorschau.mp4) (57 s, 1,9 MB; in voller Größe nach `video/` mit `python3 tools/vorschau.py`)
 
@@ -35,6 +35,7 @@ Timmendorf nutzt aus `lib/Renderer.jar` diese Packages. Jedes hat sein README im
 | `com.dan.wake` | **Neu.** Kielwasser nach Kelvin, Schaum, Schwell am Ufer (Compute-Shader) |
 | `com.dan.firework` | **Neu.** Feuerwerk: Sterne mit Masse, Farbe aus dem Spektrum der Salze, Rauch im Wind, Zündplan der Travemünder Woche |
 | `com.dan.route` | **Neu.** Wegenetze (A*, aus dem Oracle Network Data Model), Fußgänger nach Weidmann, Autos nach Greenshields, Buslinien mit Fahrplan |
+| `com.dan.beachchair` | **Neu (Phase 20).** Der Strandkorb nach dem Foto: Ostseekorb aus weißem Geflecht, Holz und Markisenstoff, Lehne und Fußstützen je Korb, abends verschlossen, Schatten auf dem Sand, drei Detailstufen |
 | `com.dan.lamp` | **Neu.** Leuchten mit Lichtstrom und Verteilung, Lampenarten mit Spektrum, Dämmerungsschalter, Fensterlicht nach der Uhrzeit |
 | `com.dan.jelly` | Ohrenquallen nach der Jahreszeit, Trift, Strandung (Phase 17) |
 | `com.dan.tree` | Bäume im Wind mit Laub nach dem Datum; seit Phase 19 Rotbuche und junge Kiefer |
@@ -47,11 +48,12 @@ Timmendorf nutzt aus `lib/Renderer.jar` diese Packages. Jedes hat sein README im
 | `com.dan.spray`, `surf`, `wave`, `buoyancy` | Brecher an den Pfählen, Brandung, Schwimmen und Rollen |
 | `com.dan.figure` | Menschen: Gehen, Sitzen, Liegen, Badezeug, Netz für die Menge |
 | `com.dan.flock`, `com.dan.seal` | Möwen, Schwäne, Kormorane, Enten; selten ein Seehund vor der Schleife |
-| `com.dan.reed`, `ground`, `dune` | Strandhafer, Schilf, Binsen und Gras um das Auge |
+| `com.dan.dune`, `wind` | Flugsand wie in Sylt (seit Phase 20): Windfeld über dem Kern, Sandfahnen zwischen den Körben, nasser Sand am Wasser und nach Regen fliegt nicht |
+| `com.dan.reed`, `ground` | Strandhafer, Schilf, Binsen und Gras um das Auge |
 | `com.dan.soundscape` | Klang ohne Aufnahmen: Brandung, Fallen an den Masten, Startsignale, Fährhorn, Feuerwerk mit Laufzeit des Schalls, Stimmen und Schritte |
 | `com.dan.kino` | Kino: Balken 2,39 : 1, Vor- und Abspann, Untertitel, Überblendung |
 | `com.dan.store` | Datenseite: Einrichter für die Oracle-Skripte, Felder als Presets und Zustand, Datei als Rückfall |
-| `com.dan.wind`, `tide`, `weathering`, `wetglass`, `mudflat`, `smoke` | Wind über dem Gelände, Pegel, Nässe; übrige Teile aus Sylt |
+| `com.dan.tide`, `weathering`, `wetglass`, `mudflat`, `smoke` | Pegel, Nässe; übrige Teile aus Sylt |
 
 Die App selbst liegt in `com.dan.timmendorf`:
 
@@ -76,7 +78,7 @@ Die App selbst liegt in `com.dan.timmendorf`:
 |---|---|
 | KAMERA | Neun Ansichten, frei fliegen, kreisen, Mitfahrt im Optimisten, Begleitboot, Spitze der Regatta |
 | ZEIT | Datum und Uhrzeit, Zeitraffer, Sprünge |
-| WETTER | Elf Lagen, Regen, Nebel, Gewitter, Blitz von Hand, Jahreszeit, Tiere |
+| WETTER | Elf Lagen, Regen, Nebel, Gewitter, Blitz von Hand, Jahreszeit, Tiere, Flugsand und „Sandsturm am Strand“, Strandkörbe |
 | WASSER | Seegang, Pegel, Sturmflut 2023 nach dem Fahrplan |
 | BOOTE, REGATTA | Flotte, Kielwasser, Regatta starten, Polare des Boots |
 | FEUERWERK | Zündplan, „Von selbst am 1. August um 22:45“, „Jetzt zünden“, Lichter |
@@ -128,7 +130,7 @@ Seit Phase 19 folgen alle Teile der Stufe, auch Brecher, Steilufer, Segel, Leuch
 | `ant pruefung` | Raum, Küste, Gelände, Ansichten, Uhr und Sonne, alle Teile der Szene, Regie und Kino, Datenseite, Schliff (Symbol, Startdateien, Stufen). Endet mit „ERGEBNIS: alles in Ordnung“ | nichts |
 | `ant dbpruefung` | Schema TIMMENDORF: Tabellen, Startdaten, Speichern und Laden, Netze | Oracle |
 | `ant dauerlauf` | 30 min ohne Fenster mit Schaltungen alle 12 s und Speichern jede Minute. Bericht in `docs/status/Dauerlauf_Phase19.txt`, `-Dminuten=…` ändert die Dauer | Grafikkarte |
-| `ant stufen`, `ant tempo` | Bilder je Sekunde und Zeit jedes Durchgangs; Statusbild mit `-Dansicht=…` | Grafikkarte |
+| `ant stufen`, `ant tempo` | Bilder je Sekunde und Zeit jedes Durchgangs; Statusbild mit `-Dansicht=…`, Flugsand mit `-Dsandsturm=an` | Grafikkarte |
 | `ant regiebuecher` | alle fünf Regiebücher bis zum Ende, je ein Blatt `docs/status/Regiebuch_….png`; `-Dbuch=Tag`, `-Dkino=an` | Grafikkarte |
 | `ant bildfolge`, `ant wetterbilder`, `ant sturmflutbilder` | Feuerwerk, Wetter und Sturmflut als Bildfolgen nach `docs/status/` | Grafikkarte |
 | `ant hoerproben` | neun Hörproben als WAV mit Spektrogramm nach `docs/hoerproben/` | nichts |
@@ -162,6 +164,6 @@ Geobasisdaten © GeoBasis-DE/LVermGeo SH (Datenlizenz Deutschland – Namensnenn
 
 ## Werdegang
 
-19 Phasen vom 30. bis 31.10.2026, Plan und Abnahmen im Artefakt „Timmendorf Werkbuch“. Was jede Phase gebracht hat, steht in [docs/WERDEGANG.md](docs/WERDEGANG.md).
+20 Phasen vom 30. bis 31.10.2026, Plan und Abnahmen im Artefakt „Timmendorf Werkbuch“. Was jede Phase gebracht hat, steht in [docs/WERDEGANG.md](docs/WERDEGANG.md).
 
 ![Programmsymbol](docs/bilder/symbol.png)
