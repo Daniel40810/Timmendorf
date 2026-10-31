@@ -218,10 +218,16 @@ public final class ControlPanel extends JPanel implements javax.swing.Scrollable
             view.requestFocusInWindow();
         });
         put(sturmB);
+        // seit Phase 21: Relief und Korn des Strands aus dem Asset (com.dan.beach)
+        FCheckBox strandBox = new FCheckBox("Strand aus dem Asset (beach: Relief und Korn am Auge)");
+        strandBox.setSelected(r.showStrand);
+        strandBox.addActionListener(e -> { r.showStrand = strandBox.isSelected(); view.requestFocusInWindow(); });
+        put(strandBox);
         put(small("<html><body style='width:215px'>Seit Phase 20: Flugsand wie in Sylt. Der Wind kommt aus einem Feld über dem Kern "
                 + "(im Lee der Promenade und des Kurparks schwächer). Nasser Sand am Wasser und nach Regen fliegt nicht, bei Schnee nichts. "
                 + "Ab etwa Bft 5 über trockenem Strand ziehen Sandfahnen zwischen den Körben. „Sandsturm am Strand“: Bft 9 auflandig, "
-                + "trocken, Blick zwischen den Körben.</body></html>"));
+                + "trocken, Blick zwischen den Körben. Seit Phase 21 hat der Sand am Auge Relief und Korn aus dem Asset sand_dunes_gltf.zip "
+                + "(com.dan.beach): zertreten zwischen den Körben, glatt am Wasser.</body></html>"));
         sub("Ebenen");
         wolkenBox.setSelected(r.showClouds);
         wolkenBox.addActionListener(e -> { r.showClouds = wolkenBox.isSelected(); view.requestFocusInWindow(); });

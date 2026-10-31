@@ -12,14 +12,14 @@ import java.util.zip.ZipFile;
  * {@code tools/PaketPruefung.java} jedes Package einzeln (Punkt 9). Hier wird nur geprüft, ob das Jar alles hat, was
  * Timmendorf braucht: jedes Package mit Klassen und README, Klassen für Java 21 (Version 65) oder älter, und bei den
  * neuen Packages {@code cloth}, {@code sail}, {@code wake}, {@code firework} und {@code route} (Hüllen seit Phase 1), seit Phase 11 {@code lamp},
- * seit Phase 20 {@code beachchair}
+ * seit Phase 20 {@code beachchair}, seit Phase 21 {@code beach}
  * Kern, Darstellung, Shader, Vorführung und Prüfklasse. Aufruf ohne Ant: {@code java tools/JarPruefung.java lib/Renderer.jar}.
  */
 public final class JarPruefung {
     /** Was Timmendorf aus Renderer.jar braucht (wie {@code app.Bibliothek}: GEBRAUCHT und NEU). */
     static final String[] GEBRAUCHT = {"ocean", "buoyancy", "surf", "beacon", "figure", "cliff", "fracture", "soundscape", "wind", "tide", "wave",
             "mudflat", "dune", "reed", "spray", "flock", "seal", "smoke", "sky", "cloud", "rain", "fog", "weather", "lightning", "season", "ice", "rime",
-            "kino", "store", "ground", "weathering", "wetglass", "cloth", "sail", "wake", "firework", "route", "lamp", "tree", "jelly", "beachchair"};
+            "kino", "store", "ground", "weathering", "wetglass", "cloth", "sail", "wake", "firework", "route", "lamp", "tree", "jelly", "beachchair", "beach"};
     static final String[][] SHADER = {
             {"tree", "Tree.class", "europeanbeech/EuropeanBeech.class", "europeanbeech/beech_a.dtree", "balticpine/BalticPine.class", "balticpine/pine_a.dtree"},   // seit Phase 19 (F24)
             {"cloth", "Cloth.class", "gl/ClothGl.class", "gl/cloth.vert", "gl/cloth.frag", "demo/ClothCheck.class", "demo/ClothDemo.class"},
@@ -30,7 +30,9 @@ public final class JarPruefung {
             {"lamp", "Lamp.class", "Lamps.class", "Spectra.class", "Windows.class", "Wet.class", "gl/LampGl.class", "gl/lamp.glsl", "gl/lamp_head.vert", "gl/lamp_head.frag", "demo/LampCheck.class", "demo/LampDemo.class"},
             // seit Phase 20: der Strandkorb nach dem Foto (Strandkorb.jpg)
             {"beachchair", "BeachChair.class", "BeachChair$Chair.class", "gl/BeachChairGl.class", "gl/beachchair.vert", "gl/beachchair.frag", "gl/shadow.vert", "gl/shadow.frag",
-                    "demo/BeachChairCheck.class", "demo/BeachChairDemo.class"}};
+                    "demo/BeachChairCheck.class", "demo/BeachChairDemo.class"},
+            // seit Phase 21: der Strand aus dem Asset (gebackene Karten im Package)
+            {"beach", "Beach.class", "relief.png", "grain.png", "sand.txt", "gl/BeachGl.class", "gl/beach.glsl", "demo/BeachCheck.class", "demo/BeachDemo.class"}};
 
     public static void main(String[] a) throws Exception {
         File jar = new File(a.length > 0 ? a[0] : "lib/Renderer.jar");
@@ -66,7 +68,7 @@ public final class JarPruefung {
                     if (z.getEntry("com/dan/" + s[0] + "/" + s[i]) == null) { fehler++; System.out.println("  FEHLER: com/dan/" + s[0] + "/" + s[i] + " fehlt"); }
             if (fehler > 0) { System.out.println("check-packages: " + fehler + " Fehler – Renderer neu bauen (Clean and Build) und dist/Renderer.jar nach lib/ kopieren"); System.exit(1); }
             System.out.println("check-packages: alle " + GEBRAUCHT.length + " gebrauchten Packages in " + jar.getName()
-                    + ", dazu Kern, Darstellung, Shader, Vorführung und Prüfklasse von cloth, sail, wake, firework, route (seit Phase 1), lamp (seit Phase 11) und beachchair (seit Phase 20), Rotbuche und Kiefer in tree (seit Phase 19).");
+                    + ", dazu Kern, Darstellung, Shader, Vorführung und Prüfklasse von cloth, sail, wake, firework, route (seit Phase 1), lamp (seit Phase 11), beachchair (seit Phase 20) und beach (seit Phase 21), Rotbuche und Kiefer in tree (seit Phase 19).");
         }
     }
 }

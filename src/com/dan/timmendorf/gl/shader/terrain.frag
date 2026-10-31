@@ -5,12 +5,14 @@
 // Sand. Steile Hänge seit Phase 9 am Brodtener Ufer aus com.dan.cliff (Cliff.brodtenerUfer), sonst nach Neigung [G]. Licht: mit
 // com.dan.sky Sonne und Mond vorbelichtet, Himmelslicht aus uSkyAmb, Wolkenschatten aus com.dan.cloud (uCloudShadow);
 // sonst der Platzhalter aus Phase 1. Dazu zuschaltbar die Marken (marken.glsl). Unter dem Wasser zeichnet com.dan.ocean.
-// Seit Phase 12 abends das Licht der Leuchten und des Feuerwerks (com.dan.lamp, lamp.glsl).
+// Seit Phase 12 abends das Licht der Leuchten und des Feuerwerks (com.dan.lamp, lamp.glsl). Seit Phase 21 am Auge Relief
+// und Korn des Strands aus com.dan.beach (beach.glsl, gebacken aus dem Sand-Asset): trocken und zertreten oben, glatt am Wasser.
 #include "common.glsl"
 #include "terrain_height.glsl"
 #include "marken.glsl"
 #include "/com/dan/cliff/gl/cliff.glsl"
 #include "/com/dan/lamp/gl/lamp.glsl"
+#include "/com/dan/beach/gl/beach.glsl"
 uniform float uLampK;            // seit Phase 12: Leuchten (com.dan.lamp, LampGl): cd/m² → vorbelichtet; 0 = aus
 uniform float uLampRange;        // bis zu diesem Abstand vom Auge rechnen (m)
 uniform vec4 uSchnee;            // seit Phase 13 (com.dan.season): Schnee am Boden (m), Reif 0..1, Pegel, frei
@@ -69,6 +71,7 @@ void main() {
 
     // Art weich an den Rändern: die vier nächsten Zellen, bilinear gewichtet
     vec3 alb = vec3(0.0);
+    float sandW = 0.0;   // seit Phase 21: Anteil Strand und Spülsaum (Art 3 und 4) für com.dan.beach
     {
         vec2 u = (p - uGrid.xy) / uGrid.z - 0.5;
         ivec2 i = ivec2(floor(u));
@@ -80,6 +83,7 @@ void main() {
                 uint a = drin ? texelFetch(uSource, q, 0).r : (vWorld.y < 0.0 ? 1u : 9u);
                 float wt = (c == 0 ? 1.0 - f.x : f.x) * (b == 0 ? 1.0 - f.y : f.y);
                 alb += artColor(a, p, pxm) * wt;
+                if (a == 3u || a == 4u) sandW += wt;
             }
     }
     // Luftbild: im Kern zu 1 m, sonst im Hauptraster zu 10 m (nur wo eine Kachel lag); Albedo ≈ 0,85 · Bild [G]
@@ -128,6 +132,17 @@ void main() {
         vec3 sand = srgb(mix(vec3(0.72, 0.66, 0.54), vec3(0.66, 0.60, 0.49), bandRausch));
         alb = mix(alb, mix(sand, mergel, smoothstep(2.0, 5.0, vWorld.y)), wand);
     }
+    // seit Phase 21: Relief und Korn des Strands am Auge (com.dan.beach): über dem Pegel (uSchnee.z) trocken ab 0,9 m,
+    // zertreten auf dem oberen Strand mit den Körben und den Wegen zum Wasser [G]; unter Schnee nichts
+    float sunK = 1.0;
+    sandW *= (1.0 - wand) * (1.0 - imKliff) * (1.0 - smoothstep(0.002, 0.06, uSchnee.x));
+    {   // ohne Verzweigung: die Textur braucht ihre Ableitungen im Bild
+        float ueber = vWorld.y - uSchnee.z;
+        BeachSample bs = beachSurface(p, n, pxm, vDist, smoothstep(0.15, 0.9, ueber), smoothstep(0.6, 1.4, ueber), uSun);
+        n = normalize(mix(n, bs.normal, sandW));
+        alb *= mix(1.0, bs.albedo, sandW);
+        sunK = mix(1.0, bs.sun, sandW);
+    }
     // Fernring: außerhalb des Hauptrasters eine Mischfarbe nach der Höhe
     float fern = 1.0 - smoothstep(0.0, uNaht, insideDist(p));
     alb = mix(alb, mix(srgb(vec3(0.66, 0.61, 0.50)), srgb(vec3(0.40, 0.46, 0.28)), smoothstep(1.0, 5.0, vWorld.y)), fern);
@@ -143,13 +158,13 @@ void main() {
     vec3 col;
     float B;
     if (uSkyMode == 1) {
-        vec3 direct = (sunLight() * max(dot(n, uSun), 0.0) + moonLight() * max(dot(n, uMoonDir), 0.0)) * cloud;
+        vec3 direct = (sunLight() * max(dot(n, uSun), 0.0) * sunK + moonLight() * max(dot(n, uMoonDir), 0.0)) * cloud;
         vec3 amb = uSkyAmb * (0.6 + 0.4 * n.y);
         col = alb * (direct / 3.14159265 + amb);
         B = 0.32 * dot(sunLight() * cloud * max(uSun.y, 0.0) / 3.14159265 + uSkyAmb + moonLight() * max(uMoonDir.y, 0.0) / 3.14159265, vec3(0.2126, 0.7152, 0.0722));
     } else {
         vec3 L = sunLight();
-        float sun = max(dot(n, uSun), 0.0);
+        float sun = max(dot(n, uSun), 0.0) * sunK;
         B = skyBrightness(sunElevDeg());
         vec3 amb = vec3(0.30, 0.38, 0.52) * B / 0.32 * (0.55 + 0.45 * n.y);
         col = alb * (L * sun * cloud + amb);
