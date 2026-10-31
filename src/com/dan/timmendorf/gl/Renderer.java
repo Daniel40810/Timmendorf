@@ -67,7 +67,7 @@ import java.util.function.Consumer;
  */
 public final class Renderer implements GLEventListener {
     public static final int MIN_MAJOR = 4, MIN_MINOR = 3;
-    public static final String VERSION = "Phase 20";
+    public static final String VERSION = "Phase 21";
     /** Phase des Stands (für Ansichten und Bedienfeld). */
     public static final int PHASE = 17;
     public static final String[] PASSES = {"Himmel", "Gelände", "Bauten", "Bewuchs", "Boote", "Menschen", "Meer", "Wolken", "Lichter", "Nachbearbeitung", "HUD"};
@@ -118,6 +118,12 @@ public final class Renderer implements GLEventListener {
     public final com.dan.timmendorf.scene.Sand sand;
     final SandGl sandGl = new SandGl();
     public volatile boolean showKoerner = true;
+    /** Seit Phase 21: Relief und Korn des Strands am Auge ({@code com.dan.beach}, gebacken aus sand_dunes_gltf.zip), ob gezeigt. */
+    public final com.dan.beach.Beach strand = com.dan.beach.Beach.ostsee();
+    final com.dan.beach.gl.BeachGl strandGl = new com.dan.beach.gl.BeachGl();
+    public volatile boolean showStrand = true;
+    /** Textureinheit des Strands im Geländeshader (frei: 0 bis 15 sind sonst belegt bis auf 1). */
+    static final int STRAND_UNIT = 1;
     /** Seit Phase 20: Nässe des Sands nach Regen 0..1, in Szenenzeit (nass in rund 5 min, trocken in rund 3 h) [G, aus Sylt]. */
     private double sandNass;
     private String bauwerkeInfo = "";
@@ -351,6 +357,8 @@ public final class Renderer implements GLEventListener {
             leben.seehund.seal.quality = stufe(com.dan.seal.Seal.Quality.MEDIUM, o);
         }
         if (klang != null) klang.s.quality = stufe(com.dan.soundscape.Soundscape.Quality.MEDIUM, o);
+        // seit Phase 21: Relief des Strands bis 60, 120, 200 oder 350 m um das Auge
+        strand.quality = com.dan.beach.Beach.Quality.values()[Math.max(0, Math.min(3, o))];
         // seit Phase 20: Strandkörbe (die Netze baut der nächste Bild neu) und Flugsand wie in Sylt nach der Stufe
         koerbeGl.korb.quality = KoerbeGl.stufe(o);
         if (sand != null) sand.stufe(o);
@@ -574,6 +582,12 @@ public final class Renderer implements GLEventListener {
         koerbeGl.init(gl, koerbe, KoerbeGl.stufe(quality.ordinal()));
         System.out.println("Timmendorf: " + koerbeGl.info);
         sandGl.init(gl);   // seit Phase 20
+        try {   // seit Phase 21
+            strandGl.init(gl);
+            System.out.println("Timmendorf: " + strandGl.info() + " · " + strand.describe());
+        } catch (RuntimeException e) {
+            System.err.println("Timmendorf: Strand (beach) nicht verfügbar: " + e.getMessage());
+        }
         bewuchsGl.init(gl);
         booteGl.init(gl);
         menschenGl.init(gl);
@@ -820,6 +834,8 @@ public final class Renderer implements GLEventListener {
         boolean kliff = showKliff && cliffGl.ready();
         if (kliff) cliffGl.bind(gl, terrainShader.id(), brodten, 4);
         terrainShader.set(gl, "uCliffOn", kliff ? 1 : 0);
+        // seit Phase 21: Relief und Korn des Strands (com.dan.beach); immer gebunden, damit der Sampler eine eigene Einheit hat
+        strandGl.bind(gl, terrainShader.id(), strand, STRAND_UNIT, showStrand && strandGl.ready());
         terrainShader.set(gl, "uLuftOn", (showLuftbild && luftKernTex != 0 ? 1 : 0) | (showLuftbild && luftHauptTex != 0 ? 2 : 0) | (klasseTex != 0 ? 4 : 0));
         double[] cr = cloudsNow ? wetter.cloudGl.shadowRect() : new double[]{0, 0, 1};
         terrainShader.set(gl, "uCloudRect", (float) cr[0], (float) cr[1], (float) Math.max(1, cr[2]), cloudsNow ? 1f : 0f);
@@ -1788,6 +1804,7 @@ public final class Renderer implements GLEventListener {
                 bauwerkeInfo,
                 (koerbeGl.ok() ? "" : "!") + (koerbeDa ? koerbeGl.describe() : String.format(Locale.GERMAN, "Strandkörbe: %,d (nicht in der Saison)", koerbe.size())),
                 (sandGl.ok ? "" : "!") + sand.zeile(camera.eye[0], camera.eye[2]),
+                (strandGl.ready() ? "" : "!") + (showStrand ? strand.describe() : "Strand aus dem Asset: aus"),
                 wiring.leuchtfeuer.describe() + String.format(Locale.GERMAN, " · %d Lichtpunkte", feuerZahl) + (beaconGl.ready() ? "" : " · !ohne BeaconGl"),
                 (cliffGl.ready() ? "" : "!") + String.format(Locale.GERMAN, "Brodtener Ufer (cliff, Geschiebemergel): Wand %.1f %%, Geröll %.1f %% der Karte, Oberkante bis %.1f m%s",
                         brodtenKarte.wallShare * 100, brodtenKarte.talusShare * 100, brodten.strata.topMax, showKliff ? "" : " · aus"),
@@ -1891,6 +1908,7 @@ public final class Renderer implements GLEventListener {
         bautenGl.dispose(gl);
         koerbeGl.dispose(gl);   // seit Phase 20
         sandGl.dispose(gl);
+        strandGl.dispose(gl);   // seit Phase 21
         menschenGl.dispose(gl);
         if (cliffGl.ready()) cliffGl.dispose(gl);
         bewuchsGl.dispose(gl);

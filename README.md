@@ -2,11 +2,11 @@
 
 ![Das Feuerwerk über der Lübecker Bucht, 1. August, 22:45](docs/bilder/feuerwerk.jpg)
 
-Die Lübecker Bucht als 3D-Echtzeitszene, von Haffkrug und Scharbeutz über Timmendorfer Strand und Niendorf bis Travemünde. Zu sehen sind der Strand mit 8 400 Strandkörben (nach dem Foto `Strandkorb.jpg`, mit Flugsand wie in Sylt), die Maritim Seebrücke mit ihrer Schleife, das Teehaus Wolkenlos, der Niendorfer Hafen, das Brodtener Steilufer und Travemünde mit der Passat. Auf dem Wasser fahren Optimisten, eine Regatta mit 20 J/70, Yachten, Kats, Kiter und die Fähren aus Skandinavien. An der Promenade gehen Menschen spazieren, auf den Straßen fahren Autos und Busse. Am Abend des 1. August steigt das große Feuerwerk.
+Die Lübecker Bucht als 3D-Echtzeitszene, von Haffkrug und Scharbeutz über Timmendorfer Strand und Niendorf bis Travemünde. Zu sehen sind der Strand mit 8 400 Strandkörben (nach dem Foto `Strandkorb.jpg`, mit Flugsand wie in Sylt und Sand aus dem Asset `sand_dunes_gltf.zip`), die Maritim Seebrücke mit ihrer Schleife, das Teehaus Wolkenlos, der Niendorfer Hafen, das Brodtener Steilufer und Travemünde mit der Passat. Auf dem Wasser fahren Optimisten, eine Regatta mit 20 J/70, Yachten, Kats, Kiter und die Fähren aus Skandinavien. An der Promenade gehen Menschen spazieren, auf den Straßen fahren Autos und Busse. Am Abend des 1. August steigt das große Feuerwerk.
 
 Die Szene läuft mit eigenem Wetter (elf Lagen), dem Jahr mit Schnee und Eis, der Sturmflut vom Oktober 2023 und Klang, der ganz ohne Aufnahmen erzeugt wird. Fünf Regiebücher führen durch die Bucht, auf Wunsch im Kino. Gelände, Häuser, Bewuchs und Wege stammen aus den amtlichen Geodaten Schleswig-Holsteins und aus OpenStreetMap. Gespeichert wird in Oracle Spatial.
 
-Java 21, OpenGL 4.3 (JOGL), Swing im F-Stil. Fortsetzung von Sylt („Projekt der Brandung“). Die Bausteine liegen als Packages in `lib/Renderer.jar`, sieben davon sind für Timmendorf entstanden.
+Java 21, OpenGL 4.3 (JOGL), Swing im F-Stil. Fortsetzung von Sylt („Projekt der Brandung“). Die Bausteine liegen als Packages in `lib/Renderer.jar`, acht davon sind für Timmendorf entstanden.
 
 **Vorschau:** [docs/bilder/vorschau.mp4](docs/bilder/vorschau.mp4) (57 s, 1,9 MB; in voller Größe nach `video/` mit `python3 tools/vorschau.py`)
 
@@ -36,6 +36,7 @@ Timmendorf nutzt aus `lib/Renderer.jar` diese Packages. Jedes hat sein README im
 | `com.dan.firework` | **Neu.** Feuerwerk: Sterne mit Masse, Farbe aus dem Spektrum der Salze, Rauch im Wind, Zündplan der Travemünder Woche |
 | `com.dan.route` | **Neu.** Wegenetze (A*, aus dem Oracle Network Data Model), Fußgänger nach Weidmann, Autos nach Greenshields, Buslinien mit Fahrplan |
 | `com.dan.beachchair` | **Neu (Phase 20).** Der Strandkorb nach dem Foto: Ostseekorb aus weißem Geflecht, Holz und Markisenstoff, Lehne und Fußstützen je Korb, abends verschlossen, Schatten auf dem Sand, drei Detailstufen |
+| `com.dan.beach` | **Neu (Phase 21).** Der Sand am Auge aus dem Asset `sand_dunes_gltf.zip`: Relief (Mulden, Tritte, Kämme) und Korn, zertreten zwischen den Körben, glatt am Wasser, im Geländeshader über `beach.glsl` |
 | `com.dan.lamp` | **Neu.** Leuchten mit Lichtstrom und Verteilung, Lampenarten mit Spektrum, Dämmerungsschalter, Fensterlicht nach der Uhrzeit |
 | `com.dan.jelly` | Ohrenquallen nach der Jahreszeit, Trift, Strandung (Phase 17) |
 | `com.dan.tree` | Bäume im Wind mit Laub nach dem Datum; seit Phase 19 Rotbuche und junge Kiefer |
@@ -78,7 +79,7 @@ Die App selbst liegt in `com.dan.timmendorf`:
 |---|---|
 | KAMERA | Neun Ansichten, frei fliegen, kreisen, Mitfahrt im Optimisten, Begleitboot, Spitze der Regatta |
 | ZEIT | Datum und Uhrzeit, Zeitraffer, Sprünge |
-| WETTER | Elf Lagen, Regen, Nebel, Gewitter, Blitz von Hand, Jahreszeit, Tiere, Flugsand und „Sandsturm am Strand“, Strandkörbe |
+| WETTER | Elf Lagen, Regen, Nebel, Gewitter, Blitz von Hand, Jahreszeit, Tiere, Flugsand und „Sandsturm am Strand“, Strand aus dem Asset, Strandkörbe |
 | WASSER | Seegang, Pegel, Sturmflut 2023 nach dem Fahrplan |
 | BOOTE, REGATTA | Flotte, Kielwasser, Regatta starten, Polare des Boots |
 | FEUERWERK | Zündplan, „Von selbst am 1. August um 22:45“, „Jetzt zünden“, Lichter |
@@ -164,6 +165,6 @@ Geobasisdaten © GeoBasis-DE/LVermGeo SH (Datenlizenz Deutschland – Namensnenn
 
 ## Werdegang
 
-20 Phasen vom 30. bis 31.10.2026, Plan und Abnahmen im Artefakt „Timmendorf Werkbuch“. Was jede Phase gebracht hat, steht in [docs/WERDEGANG.md](docs/WERDEGANG.md).
+21 Phasen vom 30. bis 31.10.2026, Plan und Abnahmen im Artefakt „Timmendorf Werkbuch“. Was jede Phase gebracht hat, steht in [docs/WERDEGANG.md](docs/WERDEGANG.md).
 
 ![Programmsymbol](docs/bilder/symbol.png)

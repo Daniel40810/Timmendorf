@@ -535,7 +535,7 @@ public final class Pruefung {
      * Sylt (com.dan.dune mit dem Wind aus com.dan.wind).
      */
     static void strand(Wiring w, Terrain t) {
-        teil("Strandkörbe und Flugsand (Phase 20): beachchair, dune, wind");
+        teil("Strandkörbe, Strand und Flugsand (Phase 20, 21): beachchair, beach, dune, wind");
         com.dan.beachchair.BeachChair korb = com.dan.timmendorf.scene.Bauwerke.korb();
         System.out.println("    " + korb.describe());
         check(korb.type == com.dan.beachchair.BeachChair.Type.OSTSEE && Math.abs(korb.seatHeight - com.dan.timmendorf.scene.Bauwerke.KORB_SITZ) < 1e-9,
@@ -571,6 +571,14 @@ public final class Pruefung {
         double[] h = korb.mesh(com.dan.beachchair.BeachChair.Lod.NEAR).bounds();
         check(Math.abs(h[4] - korb.height) < 0.01, f("Korb %.2f m hoch, nah %d, fern %d Dreiecke", h[4], korb.mesh(com.dan.beachchair.BeachChair.Lod.NEAR).triangles(),
                 korb.mesh(com.dan.beachchair.BeachChair.Lod.FAR).triangles()));
+
+        // seit Phase 21: Relief und Korn des Strands aus dem Asset (com.dan.beach)
+        com.dan.beach.Beach bs = com.dan.beach.Beach.ostsee();
+        System.out.println("    " + bs.describe());
+        double hz = bs.amplitude(1, 1), hn = bs.amplitude(0, 0);
+        check(com.dan.beach.Beach.maps().n >= 512 && hz > 0.015 && hz < 0.04 && hn < hz * 0.2,
+                f("Strand aus dem Asset: zertreten %.1f cm, nass und ruhig %.1f cm; tiefe Sonne im Relief ×%.2f", hz * 100, hn * 100,
+                        com.dan.beach.Beach.sunFactor(bs.slopeRms(1, 1), Math.sin(Math.toRadians(8)))));
 
         // Flugsand: auf trockenem Strand bei Sturm auflandig, nass nach Regen nicht, bei Schnee nicht
         double[] pk = null;
