@@ -441,9 +441,9 @@ public final class Renderer implements GLEventListener {
         sandNass = 0;
         sand.an = true;
         showKoerner = true;
-        // zwei Reihen landwärts vom Platz am Wasser, Blick mit dem Wind und längs der Reihen
+        // zwischen den Reihen landwärts vom Platz am Wasser, Blick längs der Reihen und etwas mit dem Wind (zum Land hin)
         double a = Math.toRadians(see), x = q[0] - Math.sin(a) * 14, z = q[1] + Math.cos(a) * 14;
-        camera.place(x, groundHeight(x, z) + 1.6, z, see + 180 + 25 - 70, 4);
+        camera.place(x, groundHeight(x, z) + 1.6, z, see - 105, 4);
         hudMeldung(String.format(Locale.GERMAN, "Sandsturm am Strand: Bft 9 aus %03.0f° (auflandig), trockener Sand", wiring.windFromDeg));
     }
 
