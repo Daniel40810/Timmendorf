@@ -26,7 +26,8 @@ import java.util.Locale;
  * Ansicht (Seebruecke, Schleife, Strandkoerbe, Spuelsaum, Promenade, NiendorferHafen, BrodtenerUfer, HemmelsdorferSee,
  * Vogelschau),
  * {@code kamera} = x,z,Richtung,Neigung,Höhe über Grund (frei stehend), {@code hud} = kurz|voll|aus,
- * {@code marken} = an|aus (in Phase 1 an), {@code meer} = aus, {@code pegel} = m über NHN (von Hand).
+ * {@code marken} = an|aus (in Phase 1 an), {@code meer} = aus, {@code pegel} = m über NHN (von Hand), seit Phase 20
+ * {@code sandsturm} = an (Flugsand bei Bft 9 auflandig, Blick zwischen den Körben).
  */
 public final class Tempo {
     private Tempo() { }
@@ -80,8 +81,13 @@ public final class Tempo {
             if (v == null) System.err.println("FEHLER: keine Ansicht „" + an + "“");
             else r.placeView(v);
         }
+        // seit Phase 20: -Dsandsturm=an stellt „Sandsturm am Strand“ (Bft 9 auflandig, Blick zwischen den Körben) und rechnet
+        // Windfeld und Flugsand vor dem ersten Bild
+        boolean sturm = "an".equals(opt("sandsturm"));
+        if (sturm) r.sandsturm();
         d.addGLEventListener(r);
         d.display();   // init
+        if (sturm) r.sandJetzt();
         for (int i = 0; i < 20; i++) { r.step(1 / 60.0); d.display(); }
         // seit Phase 16: -Dregiebuch=Name[,Name…] oder alle läuft Regiebücher ohne Fenster bis zum Ende (Schritte von 0,1 s);
         // Bilder nur für Fotos und Schnitte (davor 12 Bilder zum Einschwingen), am Ende das Blatt in docs/status

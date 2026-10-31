@@ -58,7 +58,7 @@ public final class ControlPanel extends JPanel implements javax.swing.Scrollable
             wolkenBox = new FCheckBox("Wolken (com.dan.cloud)"), bautenBox = new FCheckBox("Häuser aus LOD2"), bewuchsBox = new FCheckBox("Bäume und Halme (tree, reed)"),
             luftBox = new FCheckBox("Luftbild DOP20 auf dem Gelände"), oceanBox = new FCheckBox("Ostsee aus com.dan.ocean (sonst Platzhalter)"),
             booteBox = new FCheckBox("Boote zeigen (sail)"), kielBox = new FCheckBox("Kielwasser im Meer (wake)"),
-            bauwerkeBox = new FCheckBox("Seebrücken, Wolkenlos, DLRG, Kutter"), koerbeBox = new FCheckBox("Strandkörbe (Mitte April bis September)"),
+            bauwerkeBox = new FCheckBox("Seebrücken, Wolkenlos, DLRG, Kutter"), koerbeBox = new FCheckBox("Strandkörbe (beachchair, Mitte April bis September)"),
             feuerBox = new FCheckBox("Leuchtfeuer (beacon)"), altBox = new FCheckBox("Alter Leuchtturm brennt wie bis 1972"),
             kliffBox = new FCheckBox("Brodtener Ufer aus cliff");
     private FComboBox lapseBox, qualBox, hudBox;
@@ -199,6 +199,30 @@ public final class ControlPanel extends JPanel implements javax.swing.Scrollable
         put(gewitterBox);
         put(jahrBox);
         put(lebenBox);
+        // seit Phase 20: Flugsand wie in Sylt (com.dan.dune mit dem Wind aus com.dan.wind)
+        sub("Flugsand am Strand");
+        FCheckBox sandBox = new FCheckBox("Flugsand (com.dan.dune, Wind aus com.dan.wind)"), koernerBox = new FCheckBox("Körner zeigen (Sandfahnen)");
+        sandBox.setSelected(r.sand.an);
+        sandBox.addActionListener(e -> { r.sand.an = sandBox.isSelected(); view.requestFocusInWindow(); });
+        koernerBox.setSelected(r.showKoerner);
+        koernerBox.addActionListener(e -> { r.showKoerner = koernerBox.isSelected(); view.requestFocusInWindow(); });
+        put(sandBox);
+        put(koernerBox);
+        FButton sturmB = new FButton("Sandsturm am Strand");
+        sturmB.addActionListener(e -> {
+            r.sandsturm();
+            lageBox.setSelectedIndex(0);
+            sandBox.setSelected(true);
+            koernerBox.setSelected(true);
+            labels();
+            view.requestFocusInWindow();
+        });
+        put(sturmB);
+        put(small("<html><body style='width:215px'>Seit Phase 20: Flugsand wie in Sylt. Der Wind kommt aus einem Feld über dem Kern "
+                + "(im Lee der Promenade und des Kurparks schwächer). Nasser Sand am Wasser und nach Regen fliegt nicht, bei Schnee nichts. "
+                + "Ab etwa Bft 5 über trockenem Strand ziehen Sandfahnen zwischen den Körben. „Sandsturm am Strand“: Bft 9 auflandig, "
+                + "trocken, Blick zwischen den Körben.</body></html>"));
+        sub("Ebenen");
         wolkenBox.setSelected(r.showClouds);
         wolkenBox.addActionListener(e -> { r.showClouds = wolkenBox.isSelected(); view.requestFocusInWindow(); });
         put(wolkenBox);

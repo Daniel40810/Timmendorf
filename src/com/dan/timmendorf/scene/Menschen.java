@@ -38,6 +38,8 @@ public final class Menschen {
     private volatile List<Person> ruhend = List.of();
     private final Map<Integer, Person> person = new HashMap<>();
     private final List<Bauwerke.Korb> koerbe;
+    /** Seit Phase 20: in welchen Körben (Index wie die Liste der Körbe) gerade jemand sitzt; die sind offen. */
+    public volatile java.util.BitSet besetzt = new java.util.BitSet();
     private final DoubleBinaryOperator grund;
     private final java.util.function.Supplier<LocalDate> datum;
     private final java.util.function.DoubleSupplier stunde;
@@ -244,6 +246,7 @@ public final class Menschen {
      */
     List<Person> ruhende(LocalDate d, double h) {
         java.util.Arrays.fill(zahl, 0);
+        java.util.BitSet bes = new java.util.BitSet(koerbe.size());
         List<Person> l = new ArrayList<>();
         int m = d.getMonthValue();
         double p = strand(d, h);
@@ -254,6 +257,7 @@ public final class Menschen {
                 SplittableRandom r = new SplittableRandom(k.kennzahl() * 31L + i * 1_000_003L + d.getDayOfYear() * 7L);
                 double a = Math.toRadians(k.richtung()), fx = Math.sin(a), fz = -Math.cos(a), rx = -fz, rz = fx;
                 if (r.nextDouble() > p * 0.55) continue;
+                bes.set(i);
                 int n = r.nextDouble() < 0.45 ? 2 : 1;
                 for (int j = 0; j < n; j++) {
                     Person q = neu(id++, r.nextDouble(), m, r.nextDouble() < 0.6);
@@ -309,6 +313,7 @@ public final class Menschen {
             l.add(q);
             zahl[3]++;
         }
+        besetzt = bes;
         return l;
     }
 

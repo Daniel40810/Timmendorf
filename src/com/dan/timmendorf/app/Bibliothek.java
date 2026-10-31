@@ -28,9 +28,9 @@ public final class Bibliothek {
 
     /**
      * Packages, die für Timmendorf im Projekt Renderer neu entstehen; seit Phase 1 als Hüllen nach {@code muster}, seit
-     * Phase 11 dazu {@code lamp} (F18 A).
+     * Phase 11 dazu {@code lamp} (F18 A), seit Phase 20 {@code beachchair} (der Strandkorb nach dem Foto).
      */
-    public static final String[] NEU = {"cloth", "sail", "wake", "firework", "route", "lamp", "jelly"};
+    public static final String[] NEU = {"cloth", "sail", "wake", "firework", "route", "lamp", "jelly", "beachchair"};
 
     private static volatile List<String> cache;
     private static volatile String jar = "";

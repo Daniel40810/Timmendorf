@@ -309,6 +309,8 @@ public final class Klang {
         double sea = land <= 0 ? 1 : 1 / (1 + land / 60);
         s.waveHeight = brandungAn ? Math.max(0.03, w.seeHs) * sea : 0;
         s.wavePeriod = Math.max(2.5, w.seeTp);
+        // seit Phase 20: Flugsand prasselt am Ohr (Fluss aus dune, wie in Sylt)
+        s.sandFlux = windAn && hoch < 4 && r.sand != null ? r.sand.flussBei(ex, ez) : 0;
 
         // die ferne Brandung: Linie neu, wenn das Ohr gewandert ist oder alle 2 s (Seegang und Pegel ändern sich)
         lineT += dt;
