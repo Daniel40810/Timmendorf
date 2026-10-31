@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<!-- By default, only the Clean and Build commands use this build script. -->
+<!-- Commands such as Run, Debug, and Test only use this build script if -->
+<!-- the Compile on Save feature is turned off for the project. -->
+<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
+<!-- in the project's Project Properties dialog box.-->
+<project name="Timmendorf" default="default" basedir=".">
+    <description>Builds, tests, and runs the project Timmendorf.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar:                  JAR building
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="Timmendorf-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
+    <!--
+        Phase 1 (aus Sylt): Prüfung von lib/Renderer.jar. Die Element-Packages liegen nicht im Projekt: ihre Quelle ist
+        das Projekt Renderer (Paketvertrag Punkt 11, dort übersetzt tools/PaketPruefung.java jedes Package einzeln). Hier
+        prüft tools/JarPruefung.java nach jedem Übersetzen, ob lib/Renderer.jar alles hat, was Timmendorf braucht (jedes
+        Package mit Klassen und README, Java 21, Kern, Shader, Vorführung und Prüfklasse von cloth, sail, wake, firework
+        und route); abschalten mit -Dohne.paketpruefung=true.
+    -->
+    <target name="check-packages" description="Prüft lib/Renderer.jar: alle gebrauchten Packages mit README, Java 21, cloth, sail, wake, firework, route." unless="ohne.paketpruefung">
+        <property name="platform.java" value="java"/>
+        <exec executable="${platform.java}" dir="${basedir}" failonerror="true">
+            <arg value="-Dstdout.encoding=UTF-8"/>
+            <arg value="-Dstderr.encoding=UTF-8"/>
+            <arg value="tools/JarPruefung.java"/>
+            <arg value="lib/Renderer.jar"/>
+        </exec>
+    </target>
+    <target name="-post-compile" depends="check-packages"/>
+    <!-- Phase 1: Prüfprogramm der App ohne Grafikkarte und Datenbank (endet mit "ERGEBNIS: alles in Ordnung"). -->
+    <target name="pruefung" depends="compile-test" description="Startet die Prüfung com.dan.timmendorf.test.Pruefung.">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.test.Pruefung" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <jvmarg value="-Xmx6g"/>
+            <classpath><pathelement path="${run.test.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 17: db/sql/04_startdaten.sql aus com.dan.timmendorf.data.Startdaten neu schreiben (Befunde, Regiebücher, Ansichten, Fahrten,
+         Presets, Bootsklassen mit Polaren, Boote, Regatta, Effekte, Zündpläne, Sturmflut 2023, Kante aus daten/gelaende, Leuchtfeuer, Busse). -->
+    <!-- Phase 18 (Rückfluss): zwei Vergleichsblätter eines Zielprojekts Feld für Feld; ant bildvergleich -Dprojekt=Thunder [-Dvorher=vorher -Dnachher=zwischen -Dgewollt=6,7] -->
+    <target name="bildvergleich" depends="compile" description="Phase 18: vergleicht ../${projekt}/docs/rueckfluss/Vergleich_${vorher}.png mit _${nachher}.png (tools.Bildvergleich).">
+        <property name="vorher" value="vorher"/>
+        <property name="nachher" value="zwischen"/>
+        <property name="gewollt" value=""/>
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.tools.Bildvergleich" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Xmx4g"/>
+            <arg value="${projekt}"/>
+            <arg value="../${projekt}/docs/rueckfluss/Vergleich_${vorher}.png"/>
+            <arg value="../${projekt}/docs/rueckfluss/Vergleich_${nachher}.png"/>
+            <arg value="docs/rueckfluss/${projekt}_${vorher}_${nachher}.png"/>
+            <arg value="-"/>
+            <arg value="-"/>
+            <arg value="${gewollt}"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+
+    <!-- Phase 19: Programmsymbol als PNGs ins Jar und icon/Timmendorf.ico für die Verknüpfung (tools.Symbol). -->
+    <target name="symbol" depends="compile" description="Phase 19: malt das Programmsymbol (PNGs in ui/icon, icon/Timmendorf.ico, docs/bilder/symbol.png).">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.tools.Symbol" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <arg value="."/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+
+    <target name="startdaten" depends="jar" description="Phase 17: db/sql/04_startdaten.sql neu erzeugen (nicht von Hand ändern).">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.data.StartdatenSql" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <jvmarg value="-Xmx4g"/>
+            <arg value="db/sql"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 17 (F48 A): Teil 2 einrichten, ohne Startbild; legt an, was fehlt, und löscht nie etwas. -->
+    <target name="dbeinrichten" depends="jar" description="Phase 17: Schema TIMMENDORF Teil 2 aus db/sql einrichten (löscht nie).">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.data.Einrichten" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 17 (F48 A): Prüfung mit der Datenbank (richtet ein, je Speicherart hin und zurück in Oracle und Dateien, Übernahme, räumt auf). -->
+    <target name="dbpruefung" depends="compile-test" description="Phase 17: Prüfung mit dem Schema TIMMENDORF (DbPruefung).">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.test.DbPruefung" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <jvmarg value="-Xmx4g"/>
+            <classpath><pathelement path="${run.test.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 1: das Statusbild auf der Grafikkarte: docs/status/Status_Phase1.png (Grundansicht von See auf Seebrücke und
+         Ort, 25.7.2026 19:30 MESZ, Stufe Mittel, Full HD, volles HUD mit den Zeiten jedes Durchgangs). Auf der Radeon
+         laufen lassen; die Zeiten stehen auch in der Ausgabe. -Dansicht=Name wählt eine der neun Ansichten (etwa
+         -Dansicht=Seebruecke), -Dbild=… einen anderen Dateinamen. -->
+    <target name="tempo" depends="jar" description="docs/status/Status_Phase&lt;N&gt;.png nach dem Stand (Grundansicht, volles HUD; mit -Dansicht=… je Ansicht).">
+        <property name="platform.java" value="java"/>
+        <property name="ansicht" value=""/>
+        <property name="bild" value="auto"/>
+        <java classname="com.dan.timmendorf.tools.Tempo" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <jvmarg value="-Dhud=voll"/>
+            <jvmarg value="-Dansicht=${ansicht}"/>
+            <arg line="120 1920 1080 ${bild} MITTEL 19.5 2026-07-25"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 19 (F32): Tempo aller vier Stufen in Full HD (240 Bilder je Stufe, Grundansicht, ohne HUD) – Mittel soll 60 Bilder/s halten, nie unter 30. -->
+    <target name="stufen" depends="jar" description="Phase 19: misst alle vier Qualitätsstufen in Full HD (tools.Tempo).">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.tools.Tempo" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <jvmarg value="-Dhud=aus"/>
+            <arg line="240 1920 1080 - NIEDRIG 19.5 2026-07-25"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+        <java classname="com.dan.timmendorf.tools.Tempo" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <jvmarg value="-Dhud=aus"/>
+            <arg line="240 1920 1080 - MITTEL 19.5 2026-07-25"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+        <java classname="com.dan.timmendorf.tools.Tempo" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <jvmarg value="-Dhud=aus"/>
+            <arg line="240 1920 1080 - HOCH 19.5 2026-07-25"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+        <java classname="com.dan.timmendorf.tools.Tempo" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <jvmarg value="-Dhud=aus"/>
+            <arg line="240 1920 1080 - ULTRA 19.5 2026-07-25"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 19: Dauerlauf ohne Fenster (Vorgabe 30 Minuten), Protokoll docs/status/Dauerlauf_Phase19.txt; -Dminuten=5 zum Ausprobieren. -->
+    <target name="dauerlauf" depends="jar" description="Phase 19: Dauerlauf (tools.Dauerlauf), letzte Zeile „Dauerlauf bestanden“.">
+        <property name="platform.java" value="java"/>
+        <property name="minuten" value="30"/>
+        <java classname="com.dan.timmendorf.tools.Dauerlauf" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <arg value="${minuten}"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+
+    <!-- Phase 12: „Das Feuerwerk“ als Bildfolge (neun Bilder vom Abend des 1. August 2026 nach docs/status/Feuerwerk/ und die
+         Übersicht docs/status/Feuerwerk_Phase12.png). Auf der Radeon laufen lassen; -Dstufe=MITTEL für schneller. -->
+    <target name="bildfolge" depends="jar" description="Phase 12: „Das Feuerwerk“ als Bildfolge nach docs/status/Feuerwerk/ und Feuerwerk_Phase12.png.">
+        <property name="platform.java" value="java"/>
+        <property name="stufe" value="HOCH"/>
+        <java classname="com.dan.timmendorf.tools.Bildfolge" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <arg line="1920 1080 ${stufe} docs/status/Feuerwerk"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 13: „Schlechtwetter und Winter als Bilder“ (neun Bilder nach docs/status/Wetter/ und die Übersicht
+         docs/status/Wetter_Phase13.png). Auf der Radeon laufen lassen; -Dstufe=MITTEL für schneller. -->
+    <target name="wetterbilder" depends="jar" description="Phase 13: Schlechtwetter und Winter als Bilder nach docs/status/Wetter/ und Wetter_Phase13.png.">
+        <property name="platform.java" value="java"/>
+        <property name="stufe" value="HOCH"/>
+        <java classname="com.dan.timmendorf.tools.Wetterbilder" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <arg line="1920 1080 ${stufe} docs/status/Wetter"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 14: die Sturmflut 2023 als Bildfolge (neun Bilder nach docs/status/Sturmflut/ und die Übersicht mit der
+         Pegelkurve docs/status/Sturmflut_Phase14.png). Auf der Radeon laufen lassen; -Dstufe=MITTEL für schneller. -->
+    <target name="sturmflutbilder" depends="jar" description="Phase 14: die Sturmflut 2023 als Bildfolge nach docs/status/Sturmflut/ und Sturmflut_Phase14.png.">
+        <property name="platform.java" value="java"/>
+        <property name="stufe" value="HOCH"/>
+        <java classname="com.dan.timmendorf.tools.Sturmflutbilder" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <arg line="1920 1080 ${stufe} docs/status/Sturmflut"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 16: die Regiebücher ohne Fenster bis zum Ende, je ein Blatt mit den Fotos nach docs/status (Regiebuch_*.png);
+         nur eines oder einige: -Dbuch=Tag|Regatta|Sturmflut|Jahr|Weg (mit Plus verbunden); -Dkino=an auch mit Balken, Blenden
+         und Abspann (Fertig-Bedingung: das Kino läuft durch). Grafikkarte, für alle gut 20 min. -->
+    <property name="buch" value="alle"/>
+    <property name="kino" value="aus"/>
+    <target name="regiebuecher" depends="jar" description="Phase 16: die fünf Regiebücher ohne Fenster, Blätter mit den Fotos nach docs/status.">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.tools.Tempo" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="--enable-native-access=ALL-UNNAMED"/>
+            <jvmarg value="-Xmx6g"/>
+            <jvmarg value="-Dregiebuch=${buch}"/>
+            <jvmarg value="-Dkino=${kino}"/>
+            <jvmarg value="-Dhud=aus"/>
+            <arg line="1 1920 1080 - MITTEL"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 15: die Hörproben (WAV mit Spektrogramm) nach docs/hoerproben und docs/status/Klang_Phase15.png, ohne
+         Grafikkarte; nur eine: -Dnur=strand|schleife|hafen|regatta|schule|faehre|promenade|feuerwerk|sturmflut -->
+    <target name="hoerproben" depends="jar" description="Phase 15: Hörproben als WAV mit Spektrogramm nach docs/hoerproben (ohne Grafikkarte).">
+        <property name="platform.java" value="java"/>
+        <property name="nur" value=""/>
+        <java classname="com.dan.timmendorf.tools.Hoerproben" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <jvmarg value="-Xmx6g"/>
+            <arg value="docs/hoerproben"/>
+            <arg value="${nur}"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 1: die Bühne als Karte ohne Grafikkarte (docs/status/Buehne_Phase1.png, Fernfeld zu 20 m je Bildpunkt). -->
+    <target name="karte" depends="compile" description="Phase 1: docs/status/Buehne_Phase1.png (Bühne von oben, Orte und Ansichten).">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.tools.BuehnenKarte" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <arg line="docs/status/Buehne_Phase1.png 20"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 1: ../Renderer/dist/Renderer.jar nach lib/ kopieren (nach jedem Neubau des Renderers; check-packages prüft es). -->
+    <target name="renderer" description="../Renderer/dist/Renderer.jar nach lib/ kopieren.">
+        <copy file="../Renderer/dist/Renderer.jar" todir="lib" overwrite="true"/>
+        <checksum file="lib/Renderer.jar" property="renderer.md5"/>
+        <echo message="Renderer.jar ${renderer.md5} liegt in lib/."/>
+    </target>
+    <!--
+        Phase 2: die Rohdaten einmal nach daten/ (Werkbuch, Abschnitt 5). Liest den Pfad aus daten/rohdaten.properties
+        (beim ersten Lauf mit C:\Daten\Timmendorf angelegt). Schritte alkis, gelaende, bewuchs, luftbild, bauten, inhalt;
+        einzeln mit -Dschritt=gelaende+inhalt (Plus statt Komma, cmd trennt am Komma). Protokoll in daten/aufbereitung.log, Prüfbilder in docs/status/.
+    -->
+    <target name="aufbereitung" depends="jar" description="Phase 2: Rohdaten einmal nach daten/ (ALKIS, Gelände, Bewuchs, Luftbild, Bauten, INHALT.txt).">
+        <property name="platform.java" value="java"/>
+        <property name="schritt" value="alle"/>
+        <java classname="com.dan.timmendorf.tools.Aufbereitung" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <jvmarg value="-Xmx12g"/>
+            <jvmarg value="-Dschritt=${schritt}"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 2: rechnet die Prüfsummen von daten/INHALT.txt nach. -->
+    <target name="inhalt" depends="compile" description="Phase 2: Prüfsummen von daten/INHALT.txt nachrechnen.">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.tools.Inhalt" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <arg value="pruefen"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!--
+        Phase 3b: Schema TIMMENDORF Teil 1 (Werkbuch Abschnitt 8, F34-F36 alle A). Führt db/netz/*.sql aus, lädt daten/netz
+        nach Oracle (Network Data Model, TD_NET_FUSS, _STRASSE, _BUS, _SEE), TD_POI, TD_QUELLE, TD_NETZ_STAND, und vergleicht
+        die Prüfwege (LOD) mit der Datei. Beim ersten Mal mit -Dsys.passwort=... (00_sys.sql als SYS AS SYSDBA; nicht gespeichert).
+    -->
+    <target name="netzdb" depends="jar" description="Phase 3b: Netze aus daten/netz nach Oracle laden und mit der Datei vergleichen.">
+        <property name="platform.java" value="java"/>
+        <property name="sys.passwort" value=""/>
+        <java classname="com.dan.timmendorf.tools.NetzDb" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <jvmarg value="-Xmx4g"/>
+            <jvmarg value="-Dsys.passwort=${sys.passwort}"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+    <!-- Phase 3b: nur der Vergleich Oracle gegen daten/netz (Prüfwege mit LOD, Prüfbild Netz_Oracle_Phase3.png). -->
+    <target name="netzvergleich" depends="jar" description="Phase 3b: Prüfwege in Oracle gegen daten/netz.">
+        <property name="platform.java" value="java"/>
+        <java classname="com.dan.timmendorf.tools.NetzDb" fork="true" jvm="${platform.java}" dir="${basedir}" failonerror="true">
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <jvmarg value="-Xmx4g"/>
+            <arg value="vergleich"/>
+            <classpath><pathelement path="${run.classpath}"/></classpath>
+        </java>
+    </target>
+</project>

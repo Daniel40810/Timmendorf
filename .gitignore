@@ -1,0 +1,25 @@
+# Timmendorf · .gitignore (Phase 1)
+# NetBeans: Ausgaben und rechnerbezogene Einstellungen
+/build/
+/dist/
+/docs/claude/
+/docs/hoerproben/
+/docs/images/
+/docs/ruefluss/
+/docs/status/
+/nbproject/private/
+# Vorlagen (Fotos): groß, privat
+/templates/
+# Aufbereitete Daten (ab Phase 2): nicht in Git, beschrieben mit Prüfsummen in daten/INHALT.txt
+/daten/
+# Pfad der Rohdaten (Vorgabe C:\Daten\Timmendorf, nach Projektende verschoben)
+/daten/rohdaten.properties
+# Bildfolgen und Videos
+/video/
+# Zugangsdaten: db.properties enthält nach dem ersten Verbinden das Passwort im Klartext
+/db/db.properties
+# db/USER.sql trägt das Passwort des Schemas im Klartext (wie in Sylt)
+/db/USER.sql
+# Austausch mit Claude (Archive, Zwischenstände) und alte Hilfsskripte
+/_transfer/
+/Claude outputs/

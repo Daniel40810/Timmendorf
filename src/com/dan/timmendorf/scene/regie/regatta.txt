@@ -1,0 +1,29 @@
+# Timmendorf · Regiebuch (Phase 16). Eine Zeile je Stichwort: Zeit (Minuten:Sekunden echte Zeit), Befehl, Argumente, nach
+# „ | “ der Text fürs HUD und die Untertitel im Kino. Mehrere Befehle zur selben Zeit sind ein Stichwort. Befehle: zeit,
+# raffer, lage, regie, sturmflut, feuerwerk, regatta, ansicht, fahrt, warte, foto, blatt, sage.
+# „warte uhr [TT.MM.] hh:mm|start|ziel|feuerwerk|fahrt“ hält die Uhr des Regiebuchs an, bis die Szene so weit ist. Gestaltet [G].
+Regiebuch: Die Regatta
+Beschreibung: 20 J/70 vor Timmendorf, Lauf auf und ab: Ankündigung, Vorbereitung, eine Minute, der Startschuss, die Kreuz zur Luvtonne, Wenden am Rand des Felds, das Feld von der Seebrücke und von oben
+Länge: 7:20
+0:00 zeit 25.07.2026 14:00 | 14:00: die J/70 sammeln sich vor Timmendorf
+0:00 lage Sommerabend
+0:00 raffer 1
+0:00 regatta
+0:00 ansicht Startschiff | die Ankündigung: fünf Minuten bis zum Start
+0:24 foto Das Startschiff
+0:40 fahrt Regatta | im Begleitboot zwischen den Booten
+1:30 foto Vor dem Start
+1:40 ansicht Schleife | von der Schleife aus: das Feld vor der Linie
+2:10 foto Das Feld vor der Linie
+2:20 fahrt Drohne | die Bucht und die Bahn von oben
+2:22 warte fahrt
+3:10 ansicht Startschiff | die letzte Minute
+3:30 fahrt Regatta
+4:50 warte start
+4:50 sage der Startschuss
+5:00 foto Nach dem Start
+5:30 fahrt Regatta | die Kreuz zur Luvtonne
+6:20 foto Die Kreuz zur Luvtonne
+6:40 ansicht Schleife | das Feld auf der Kreuz
+7:00 foto Das Feld von der Seebrücke
+7:10 blatt Die Regatta

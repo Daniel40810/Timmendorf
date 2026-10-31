@@ -1,0 +1,39 @@
+# Timmendorf · Regiebuch (Phase 16). Eine Zeile je Stichwort: Zeit (Minuten:Sekunden echte Zeit), Befehl, Argumente, nach
+# „ | “ der Text fürs HUD und die Untertitel im Kino. Mehrere Befehle zur selben Zeit sind ein Stichwort. Befehle: zeit,
+# raffer, lage, regie, sturmflut, feuerwerk, regatta, ansicht, fahrt, warte, foto, blatt, sage.
+# „warte uhr [TT.MM.] hh:mm|start|ziel|feuerwerk|fahrt“ hält die Uhr des Regiebuchs an, bis die Szene so weit ist. Gestaltet [G].
+Regiebuch: Ein Jahr an der Bucht
+Beschreibung: August 2026 bis Juli 2027 an der Lübecker Bucht: Hochsommer mit Strandkörben, ein Herbststurm, bunte Buchen am Brodtener Ufer, ein Wintertag mit Eis am Strand, Schnee, das Frühjahr und wieder Sommer
+Länge: 2:50
+0:00 zeit 08.08.2026 15:00 | August: Hochsommer, die Körbe stehen dicht
+0:00 lage Sommerabend
+0:00 raffer 60
+0:00 ansicht Strandkörbe
+0:14 foto Hochsommer am Strand
+0:20 zeit 14.10.2026 13:00 | Oktober: Herbststurm aus Nordwest
+0:20 lage Herbststurm
+0:20 ansicht Seebrücke
+0:36 foto Herbststurm an der Seebrücke
+0:42 zeit 20.10.2026 15:00 | die Buchen am Brodtener Ufer färben sich
+0:42 lage Westwind
+0:42 ansicht Brodtener Ufer
+0:58 foto Herbst am Brodtener Ufer
+1:04 zeit 10.02.2027 11:00 | Februar: ein Wintertag mit Ostwind und Frost, Eis am Strand
+1:04 lage Wintertag
+1:04 ansicht Spülsaum
+1:20 foto Eis am Spülsaum
+1:26 lage Schneefall | Schnee über der Promenade
+1:26 ansicht Promenade
+1:42 foto Schnee an der Promenade
+1:48 zeit 22.04.2027 10:00 | April: Westwind, die Körbe kommen wieder an den Strand
+1:48 lage Westwind
+1:48 ansicht Schleife
+2:04 foto Frühjahr auf der Schleife
+2:10 zeit 10.07.2027 19:00 | Juli: wieder Sommer, Seewind am Abend
+2:10 lage Sommerabend
+2:10 ansicht Niendorfer Hafen
+2:26 foto Sommerabend im Niendorfer Hafen
+2:32 fahrt Drohne | ein Jahr später: die Bucht von oben
+2:34 warte fahrt
+2:34 foto Die Bucht im Sommer
+2:40 blatt Ein Jahr an der Bucht

@@ -1,0 +1,40 @@
+# Timmendorf · Regiebuch (Phase 16). Eine Zeile je Stichwort: Zeit (Minuten:Sekunden echte Zeit), Befehl, Argumente, nach
+# „ | “ der Text fürs HUD und die Untertitel im Kino. Mehrere Befehle zur selben Zeit sind ein Stichwort. Befehle: zeit,
+# raffer, lage, regie, sturmflut, feuerwerk, regatta, ansicht, fahrt, warte, foto, blatt, sage.
+# „warte uhr [TT.MM.] hh:mm|start|ziel|feuerwerk|fahrt“ hält die Uhr des Regiebuchs an, bis die Szene so weit ist. Gestaltet [G].
+Regiebuch: Die Sturmflut
+Beschreibung: 19. bis 23. Oktober 2023, die schwerste Ostseesturmflut seit Jahrzehnten an der Lübecker Bucht: Ostwind, die Bucht füllt sich, Brecher an der Seebrücke, der Scheitel mit 1,77 m in Travemünde, Abbrüche am Brodtener Ufer, der Tag danach
+Länge: 3:30
+0:00 sturmflut 19.10.2023 14:00 | 19.10.2023, 14:00: der Ostwind drückt das Wasser in die Bucht
+0:00 raffer 1800
+0:00 ansicht Sturmflut Strand
+0:12 foto Die Bucht füllt sich
+0:20 warte uhr 20.10. 15:00
+0:20 raffer 60 | 20.10., 15:00: über 1,50 m, der Strand ist fort
+0:20 ansicht Sturmflut Promenade
+0:34 foto Der Strand ist fort
+0:40 raffer 600
+0:40 warte uhr 20.10. 20:00
+0:40 raffer 30 | 20:00: Brecher an der Seebrücke
+0:40 ansicht Sturmflut Strand
+0:58 foto Brecher an der Seebrücke
+1:04 raffer 300
+1:04 warte uhr 20.10. 23:00
+1:04 raffer 10 | 23:00: der Scheitel, 1,77 m über Normalhöhennull
+1:04 ansicht Sturmflut Promenade
+1:24 foto Der Scheitel an der Promenade
+1:30 ansicht Niendorfer Hafen | der Niendorfer Hafen steht unter Wasser
+1:46 foto Niendorfer Hafen am Scheitel
+1:52 raffer 1800
+1:54 warte uhr 21.10. 10:00
+1:54 raffer 60 | 21.10., 10:00: am Brodtener Ufer brechen die Kanten ab
+1:54 ansicht Brodtener Ufer
+2:20 foto Abbrüche am Brodtener Ufer
+2:30 raffer 3600
+2:32 warte uhr 23.10. 12:00
+2:32 raffer 60 | 23.10., 12:00: Sturzkegel liegen am Fuß des Kliffs
+2:32 ansicht Brodtener Ufer
+2:50 foto Der Tag danach
+2:56 ansicht Sturmflut Strand | die Bucht ist wieder ruhig
+3:10 foto Danach am Strand
+3:20 blatt Die Sturmflut

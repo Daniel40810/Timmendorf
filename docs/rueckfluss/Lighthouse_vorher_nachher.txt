@@ -1,0 +1,14 @@
+Lighthouse · Vergleich_vorher.png gegen Vergleich_nachher.png · 4 × 3 Felder zu 450 × 337
+ok       Feld  1: mittlere Abweichung 0,00, spürbar 0,00 %, größte 0
+GEWOLLT  Feld  2: mittlere Abweichung 0,03, spürbar 0,05 %, größte 48
+ok       Feld  3: mittlere Abweichung 0,00, spürbar 0,00 %, größte 0
+GEWOLLT  Feld  4: mittlere Abweichung 0,21, spürbar 0,17 %, größte 221
+GEWOLLT  Feld  5: mittlere Abweichung 0,53, spürbar 0,72 %, größte 191
+GEWOLLT  Feld  6: mittlere Abweichung 0,37, spürbar 0,86 %, größte 157
+GEWOLLT  Feld  7: mittlere Abweichung 0,26, spürbar 0,57 %, größte 232
+GEWOLLT  Feld  8: mittlere Abweichung 4,25, spürbar 5,67 %, größte 252
+GEWOLLT  Feld  9: mittlere Abweichung 0,28, spürbar 0,26 %, größte 197
+GEWOLLT  Feld 10: mittlere Abweichung 1,61, spürbar 3,14 %, größte 181
+GEWOLLT  Feld 11: mittlere Abweichung 0,00, spürbar 0,00 %, größte 2
+GEWOLLT  Feld 12: mittlere Abweichung 0,29, spürbar 0,43 %, größte 198
+ERGEBNIS: alle Felder stimmen

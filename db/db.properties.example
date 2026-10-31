@@ -1,0 +1,8 @@
+# Zugang zur Oracle-Datenbank (Schema Timmendorf, Dienst PDBORCL), angelegt mit USER.sql.
+# Diese Datei nach db.properties kopieren; db.properties steht in .gitignore und kommt nie ins Git.
+url=jdbc:oracle:thin:@//localhost:1521/PDBORCL
+user=Timmendorf
+# Das Passwort kann hier leer bleiben. Dann fragt das Startbild danach und trägt es nach dem
+# erfolgreichen Verbinden in db.properties ein (Klartext, die Datei steht in .gitignore).
+# Alternativ kommt es aus der Umgebungsvariablen Timmendorf_DB_PASSWORD.
+password=

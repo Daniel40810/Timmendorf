@@ -1,0 +1,18 @@
+# Timmendorf · Regiebuch (Phase 16). Eine Zeile je Stichwort: Zeit (Minuten:Sekunden echte Zeit), Befehl, Argumente, nach
+# „ | “ der Text fürs HUD und die Untertitel im Kino. Mehrere Befehle zur selben Zeit sind ein Stichwort. Befehle: zeit,
+# raffer, lage, regie, sturmflut, feuerwerk, regatta, ansicht, fahrt, warte, foto, blatt, sage.
+# „warte uhr [TT.MM.] hh:mm|start|ziel|feuerwerk|fahrt“ hält die Uhr des Regiebuchs an, bis die Szene so weit ist. Gestaltet [G].
+Regiebuch: Mein Weg zum Strand
+Beschreibung: zu Fuß über das Fußnetz aus OpenStreetMap von einem Ort deiner Wahl (Bedienfeld, REGIEBÜCHER) bis an das Landende der Maritim Seebrücke und hinaus auf die Schleife; ohne Wahl vom Bahnhof Timmendorfer Strand. Der Ort wird nicht gespeichert
+Länge: 0:30
+0:00 zeit 25.07.2026 16:00 | 16:00: ein Sommernachmittag
+0:00 lage Sommerabend
+0:00 raffer 1
+0:00 fahrt Weg | zu Fuß zum Strand
+0:04 foto Unterwegs
+0:06 warte fahrt
+0:06 foto Am Landende der Seebrücke | angekommen am Strand
+0:12 fahrt Seebrücke | und hinaus auf die Seebrücke
+0:14 warte fahrt
+0:14 foto Auf der Schleife
+0:20 blatt Mein Weg zum Strand

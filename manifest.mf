@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+X-COMMENT: Main-Class will be added automatically by build
+Add-Opens: java.desktop/sun.awt java.desktop/sun.awt.windows java.deskto
+ p/sun.java2d
+Enable-Native-Access: ALL-UNNAMED
+

@@ -1,0 +1,14 @@
+Lighthouse · Lighthouse/docs/rueckfluss/Vergleich_vorher.png gegen Lighthouse/docs/rueckfluss/Vergleich_zwischen.png · 4 × 3 Felder zu 450 × 337
+ok       Feld  1: mittlere Abweichung 0,00, spürbar 0,00 %, größte 0
+ok       Feld  2: mittlere Abweichung 0,00, spürbar 0,00 %, größte 1
+ok       Feld  3: mittlere Abweichung 0,00, spürbar 0,00 %, größte 0
+ok       Feld  4: mittlere Abweichung 0,00, spürbar 0,00 %, größte 0
+ok       Feld  5: mittlere Abweichung 0,02, spürbar 0,03 %, größte 39
+ok       Feld  6: mittlere Abweichung 0,05, spürbar 0,12 %, größte 68
+ok       Feld  7: mittlere Abweichung 0,01, spürbar 0,00 %, größte 15
+ok       Feld  8: mittlere Abweichung 0,00, spürbar 0,00 %, größte 2
+ok       Feld  9: mittlere Abweichung 0,00, spürbar 0,00 %, größte 3
+ok       Feld 10: mittlere Abweichung 0,01, spürbar 0,01 %, größte 143
+ok       Feld 11: mittlere Abweichung 0,00, spürbar 0,00 %, größte 1
+ok       Feld 12: mittlere Abweichung 0,00, spürbar 0,00 %, größte 58
+ERGEBNIS: alle Felder stimmen

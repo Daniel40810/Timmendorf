@@ -1,0 +1,25 @@
+# Befunde des Werkbuchs (Abschnitt 13 und 16) für TD_BEFUND: Nr | Phase | Thema | Art | Stand | behoben in | Commit | Text | Belege (Komma)
+# Art: BELEGT, GEMESSEN, GESTALTET · Stand: OFFEN, BEHOBEN, BLEIBT
+1 | 1 | Seebrücke | GEMESSEN | BEHOBEN | 2 | | Der OSM-Umriss der Maritim Seebrücke reicht 213 m hinaus, nicht 427 m; die Länge zählt wohl den Rundweg mit. Phase 2 misst am DOP20. | OpenStreetMap, DOP20
+2 | 2 | Gelände | GEMESSEN | BEHOBEN | 3 | | Trave und Pötenitzer Wiek liegen im DGM1 2022 eben auf 0,8 m; jetzt Wasser, wo ALKIS Gewässer sagt und der Spiegel eben ist. | DGM1, ALKIS
+3 | 2 | Gelände | GEMESSEN | BEHOBEN | 3 | | Der GEBCO-Download endete bei 10,90° O: harte Kante in der Bucht. Neu geladen bis 11,7° O, als B-Spline statt bilinear. | GEBCO
+4 | 3 | Bedienung | GEMESSEN | BLEIBT | | | Die Windows-Eingabe trennt -D am Komma; Schritte und Werte mit Komma deshalb mit Plus oder in Anführungszeichen. |
+5 | 8 | Boote | GEMESSEN | BEHOBEN | 9 | | Der Gennaker stand schon im Startverfahren; jetzt erst nach dem Start (Boat.downwindAllowed). |
+6 | 8 | Prüfung | GEMESSEN | BEHOBEN | 9 | | Die Prüfung der Passat und der Fähren lief auf der Bühne; jetzt auf dem gemessenen Gelände. |
+7 | 12 | Lichter | GEMESSEN | BEHOBEN | 13 | 3186d57 | Die Lichtpunkte der Leuchten starteten nicht (lamp_head.frag mit doppeltem #version); weil das Feuerwerk nur mit ihnen vorbereitet wurde, fehlte es in allen Bildern. |
+8 | 12 | Kamera | GEMESSEN | BEHOBEN | 13 | | Die Kameras der Bildfolge schauten in den Boden (die Neigung zählt nach unten) und standen landwärts zwischen den Häusern. |
+9 | 13 | Leben | GEMESSEN | BEHOBEN | 13 | | Das Revier der Tiere stand im freien Flug still (camera.tx); jetzt 150 m vor dem Auge. |
+10 | 14 | Belichtung | GEMESSEN | BEHOBEN | 15 | | Die Nachtbilder am Scheitel der Sturmflut waren weiß; lum.frag misst jetzt auch das lineare Mittel, ein Viertel davon hält die Anpassung oben. |
+11 | 15 | Klang | GEMESSEN | BEHOBEN | 15 | 6847ae6 | Der Belag am Spülsaum galt nicht als Sand; jetzt Strand, nasser Sand und bis 50 m landwärts. |
+12 | 15 | Klang | GEMESSEN | OFFEN | | | In der Hörprobe „Segelschule“ schlug kein Segel: die Optimisten wenden selten, die Zahl der Anluver ist gedrosselt. |
+13 | 16 | Regie | GEMESSEN | BEHOBEN | 17 | 4c90577 | „Mein Weg“ begann am ersten Treffer für „Bahnhof“, dem Strandbahnhof in Travemünde (8,98 km zu Fuß); jetzt der nächste Treffer zur Seebrücke, leer der Bahnhof Timmendorfer Strand. | OpenStreetMap
+14 | 16 | Regie | GEMESSEN | BEHOBEN | 17 | 4c90577 | Zwei Fotos des Feuerwerks um 22:45 und 22:46 trafen eine Pause zwischen den Bomben; jetzt wartet ein Foto bis zu 8 s auf brennende Sterne. |
+15 | 16 | Regie | GEMESSEN | BEHOBEN | 17 | 4c90577 | Im Foto des Mondaufgangs kein Mond: der Blick ging fest auf 98°, um 22:10 stand er kaum 1° hoch; jetzt zum Mond, Foto um 22:22. |
+16 | 16 | Belichtung | GEMESSEN | OFFEN | | | Die Promenade in der Nacht ist sehr dunkel. |
+17 | 16 | Leistung | GEMESSEN | OFFEN | | | Fotos ohne Fenster (ant regiebuecher) laufen mit 1–4 Bildern je s. |
+18 | 17 | Physik | GEMESSEN | BEHOBEN | 17 | e011fca | Tempo hielt den Physik-Faden an, ohne auf ihn zu warten; Faden und Schritt rechneten die Verdrahtung gleichzeitig, „Hüllen“ fiel mit einer ConcurrentModificationException heraus, mit ihr Boote und Feuerwerk, und „warte feuerwerk“ lief 600 s ins Leere. |
+19 | 17 | Quallen | GEMESSEN | BEHOBEN | 17 | | Im Foto „Ohrenquallen unter der Seebrücke“ keine Qualle: der Schirm lag 3 cm über dem ruhigen Spiegel, Wellenkämme der See deckten ihn zu; jetzt höher mit dem Seegang. |
+20 | 17 | Quallen | GESTALTET | BLEIBT | | | Die Zahl der Ohrenquallen je m² ist frei gewählt; belegt sind nur Zeit und Größe im Jahr und der Schlag nach der Größe. |
+21 | 12 | Feuerwerk | GESTALTET | BLEIBT | | | Der Anlass – Feuerwerk am Samstag, 1. August 2026, 22:45, vom Ponton vor der Seebrücke – ist erfunden; Mond und Sonne sind gerechnet. |
+22 | 14 | Sturmflut | BELEGT | BLEIBT | | | Scheitel der Sturmflut vom 20./21. Oktober 2023 am Pegel Travemünde 1,77 m über NHN; die Stunden dazwischen und das Nachschwingen sind geglättet [G]. | BSH
+23 | 10 | Verkehr | GESTALTET | BLEIBT | | | Die Buslinie Scharbeutz–Niendorf fährt nach den Haltestellen längs der Küste alle 30 min von 6 bis 22 Uhr – nicht der echte Fahrplan. | OpenStreetMap

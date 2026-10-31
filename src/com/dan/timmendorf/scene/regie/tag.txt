@@ -1,0 +1,67 @@
+# Timmendorf · Regiebuch (Phase 16). Eine Zeile je Stichwort: Zeit (Minuten:Sekunden echte Zeit), Befehl, Argumente, nach
+# „ | “ der Text fürs HUD und die Untertitel im Kino. Mehrere Befehle zur selben Zeit sind ein Stichwort. Befehle: zeit,
+# raffer, lage, regie, sturmflut, feuerwerk, regatta, ansicht, fahrt, warte, foto, blatt, sage.
+# „warte uhr [TT.MM.] hh:mm|start|ziel|feuerwerk|fahrt“ hält die Uhr des Regiebuchs an, bis die Szene so weit ist. Gestaltet [G].
+Regiebuch: Ein Tag am Strand
+Beschreibung: Samstag, 1. August 2026, zur Travemünder Woche: die erste Sonne neben der Seebrücke, ein Optimist kreuzt, die Strandkörbe füllen sich, Mittag auf der Schleife, das Startverfahren der Regatta, der Niendorfer Hafen, Abend am Brodtener Ufer, der Mond über der Bucht und das Feuerwerk
+Länge: 5:30
+0:00 zeit 01.08.2026 05:10 | 5:10: der Morgen über der Lübecker Bucht
+0:00 lage Sommerabend
+0:00 feuerwerk abend
+0:00 raffer 40
+0:00 ansicht Sonnenaufgang
+0:04 warte uhr 05:30
+0:04 raffer 3 | 5:30: die erste Sonne neben der Seebrücke
+0:14 foto Sonnenaufgang über der Bucht
+0:20 raffer 1
+0:20 fahrt Optimist | ein Optimist kreuzt vor der Seebrücke
+0:52 foto Mit dem Optimisten
+0:58 zeit 01.08.2026 10:30 | 10:30: die Strandkörbe füllen sich
+0:58 raffer 10
+0:58 ansicht Strandkörbe
+1:14 foto Strandkörbe am Vormittag
+1:20 raffer 1
+1:20 zeit 01.08.2026 12:40
+1:20 fahrt Seebrücke | Mittag: über die Maritim Seebrücke hinaus
+1:22 warte fahrt
+1:22 ansicht Schleife | auf der Schleife, der Blick zurück zum Strand
+1:34 foto Auf der Schleife
+1:35 ansicht Quallen | Ohrenquallen unter der Seebrücke
+1:39 foto Ohrenquallen unter der Seebrücke
+1:40 zeit 01.08.2026 14:00
+1:40 regatta | 14:00: die J/70 vor Timmendorf, das Startverfahren beginnt
+1:40 ansicht Startschiff
+2:00 fahrt Regatta | mit dem Begleitboot an der Startlinie
+2:30 foto Startverfahren der Regatta
+2:40 zeit 01.08.2026 17:30 | 17:30: der Niendorfer Hafen, Kutter und Möwen
+2:40 raffer 10
+2:40 ansicht Niendorfer Hafen
+3:00 foto Niendorfer Hafen am Nachmittag
+3:06 zeit 01.08.2026 20:30 | 20:30: das Brodtener Ufer im Abendlicht
+3:06 raffer 30
+3:06 ansicht Brodtener Ufer
+3:24 foto Brodtener Ufer am Abend
+3:30 fahrt Drohne | die Bucht in der Dämmerung, von Niendorf bis Scharbeutz
+3:32 warte fahrt
+3:32 zeit 01.08.2026 21:55
+3:32 raffer 20
+3:32 ansicht Mondaufgang | 22:00: der Mond kommt über der Bucht herauf
+3:34 warte uhr 22:22
+3:34 ansicht Mondaufgang
+3:34 raffer 4
+3:40 foto Mondaufgang über der Bucht
+3:46 raffer 1
+3:46 zeit 01.08.2026 22:44
+3:46 ansicht Feuerwerk | 22:45: das Feuerwerk vom Ponton vor der Seebrücke
+3:50 warte uhr 22:45
+4:04 sage erst das Bild, dann der Knall
+4:12 foto Das Feuerwerk über der Bucht
+4:30 raffer 2
+4:40 foto Weiden und Chrysanthemen über dem Wasser
+4:46 warte uhr 22:50
+4:46 foto Das Finale | das Finale
+4:52 warte feuerwerk
+4:52 raffer 1
+4:52 ansicht Promenade | nach dem Feuerwerk gehen alle nach Hause
+5:16 foto Promenade in der Nacht
+5:24 blatt Ein Tag am Strand
